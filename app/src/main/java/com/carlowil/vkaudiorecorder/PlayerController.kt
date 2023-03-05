@@ -7,31 +7,36 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 
 
-class PlayerController() {
+class PlayerController(val path : String) {
+    private var wasPlaying = false
 
-    private val mediaPLayer = MediaPlayer().apply {
+    private var mediaPlayer = MediaPlayer().apply {
         setAudioAttributes(
             AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .build()
         )
+        setDataSource(path)
     }
 
-    fun startAudio(path : String) {
-        if(mediaPLayer.isPlaying) {
-            stopAudio()
-        } else {
-            mediaPLayer.setDataSource(path)
-            mediaPLayer.prepare()
-            mediaPLayer.start()
+
+    fun play() {
+        if(mediaPlayer.isPlaying) {
+            clearMediaPLayer()
+            wasPlaying = true
         }
+        if (!wasPlaying) {
+            mediaPlayer.prepare()
+            mediaPlayer.start()
+        }
+        wasPlaying = false
     }
 
-    private fun stopAudio() {
-        mediaPLayer.stop()
-        mediaPLayer.reset()
-        mediaPLayer.release()
-    }
 
+    private fun clearMediaPLayer() {
+        mediaPlayer.stop()
+        mediaPlayer.reset()
+        mediaPlayer.release()
+    }
 }

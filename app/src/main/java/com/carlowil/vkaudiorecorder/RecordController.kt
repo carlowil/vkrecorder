@@ -34,7 +34,6 @@ class RecordController() {
 
     fun isAudioRecording() = recorder != null
 
-    fun getVolume() = recorder?.maxAmplitude ?: 0
 
     private fun getAudioPath(): String {
         val path = Environment.getExternalStorageDirectory().absolutePath + "/Recordings/${System.currentTimeMillis()}.wav"
